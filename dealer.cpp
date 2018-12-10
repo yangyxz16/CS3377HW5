@@ -11,36 +11,42 @@ int main(int argc, char **argv)
 	int c;
 	int percent;
 	int numOfT;	// Number of trails.
-	
-	while ((c = getopt(argc, argv, "p:v:")) != -1) {
+	int index;
+	while ((c = getopt(argc, argv, "p:v")) != -1) {
 		switch(c) {
 			case 'p': 
 				percent = atoi(optarg);
+				printf("%d \n", percent);
 				break;
 			case 'v': 
 				verbose();
 				break;
 			case '?':
-				numOfT = atoi(optarg);
-				if(optopt = 'p') {
-					fprintf(stderr, "Option -%c needs argument\n", optopt);
-				} 
-				else {
-					fprintf(stderr, "Option -%c needs argument\n", optopt);
-				}
+			
+				//if (isprint (optopt))
+				//	fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+				//numOfT = atoi(optarg);
+				//printf("%d \n",numOfT);
+				//if(optopt = 'p') {
+				//	fprintf(stderr, "Option -%c needs argument\n", optopt);
+				//} 
+				//else {
+				//	fprintf(stderr, "Unknow option -%c. \n", optopt);
+				//}
+				break;
 			default:
-				printf("Error");
+				fprintf(stderr, "getopt");
 		}
 	}
+	//for (index = optind; index < argc; index++)
+	 //   printf ("Non-option argument %s\n", argv[index]);
 
-
-
-	//cout << percent << "\n" << numOfT << endl;
-	//printf(percent, "\n", numOfT);
-
+	numOfT = atoi(argv[optind]);
+	printf("The number of trails is %d \n",numOfT);
 
 	return 0;
 }
 
 void verbose() {
+printf("verbose mode on\n");
 }
