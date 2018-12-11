@@ -19,11 +19,19 @@ int main(int argc, char **argv)
 	randomNum = get_random_number();
 	randomNum = randomNum * 100;
 	randomPercent = int(randomNum);
-	printf("%f\n", randomNum);
-	printf("%d\n", randomPercent);
 	
 	finalize_mytool();
-	//printf("%d\n", randomNum);
+	
+	printf("%d\n", percent);
+	printf("%d\n", randomPercent);
+
+	if (randomPercent <= percent) {
+		printf("Success!\n");
+	} else {
+		printf("Failure!\n");
+	}
+
+
 	return 0;
 }
 

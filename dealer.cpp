@@ -13,12 +13,14 @@ int main(int argc, char **argv)
 {
 	int c;		// Used for getopt().
 	int percent;
+	char const* p;
 	int numOfT;	// Number of trails.
 	bool verbose = false;
 
 	while ((c = getopt(argc, argv, "p:v")) != -1) {
 		switch(c) {
 			case 'p': 
+				p = optarg;		
 				percent = atoi(optarg);
 				break;
 			case 'v': 
@@ -73,8 +75,8 @@ int main(int argc, char **argv)
 	pid_t pid[numOfT]; 
 	for (i=0; i<numOfT; i++) { 
 		if ((pid[i] = fork()) == 0) {	// Child process.
-			//sleep(1);
-			execl("/bin/echo", "echo", "hello!", 0);
+			sleep(1);
+			execv("./hand", &argv[1]);
 			perror("execl() failure!\n");
 
 			exit(100 + i);
