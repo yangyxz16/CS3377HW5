@@ -72,13 +72,20 @@ int main(int argc, char **argv)
 	int i, stat;
 	pid_t pid[numOfT]; 
 	for (i=0; i<numOfT; i++) { 
-		if ((pid[i] = fork()) == 0) {
-			sleep(1); 
-			exit(100 + i); 
-		} 
+		if ((pid[i] = fork()) == 0) {	// Child process.
+			//sleep(1);
+			execl("/bin/echo", "echo", "hello!", 0);
+			perror("execl() failure!\n");
+
+			exit(100 + i);
+		}
+		else {				// Parent process.
+			wait(&stat);
+			printf("PID %d\n", pid[i]);
+		}
 	} 
 									
-	if (verbose) {
+	if (verbose) {			
 	 	for (i=0; i<numOfT; i++) { 
 	 		pid_t cpid = waitpid(pid[i], &stat, 0);
 			if (WIFEXITED(stat)) {
