@@ -2,47 +2,97 @@
 //#include <unistd.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 //#include <iostream>
 
 void verbose();
 
 int main(int argc, char **argv)
 {
-	int c;
+	int c;		// Used for getopt().
 	int percent;
 	int numOfT;	// Number of trails.
-	int index;
+	bool verbose = false;
+
 	while ((c = getopt(argc, argv, "p:v")) != -1) {
 		switch(c) {
 			case 'p': 
 				percent = atoi(optarg);
-				printf("%d \n", percent);
 				break;
 			case 'v': 
-				verbose();
-				break;
-			case '?':
-			
-				//if (isprint (optopt))
-				//	fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-				//numOfT = atoi(optarg);
-				//printf("%d \n",numOfT);
-				//if(optopt = 'p') {
-				//	fprintf(stderr, "Option -%c needs argument\n", optopt);
-				//} 
-				//else {
-				//	fprintf(stderr, "Unknow option -%c. \n", optopt);
-				//}
+				verbose = true;
 				break;
 			default:
 				fprintf(stderr, "getopt");
 		}
 	}
-	//for (index = optind; index < argc; index++)
-	 //   printf ("Non-option argument %s\n", argv[index]);
+
 
 	numOfT = atoi(argv[optind]);
-	printf("The number of trails is %d \n",numOfT);
+
+	if (percent > 100) {
+		fprintf(stderr, "The percentage cannot be larger than 100!\n");
+	}
+	else {
+		printf("%d \n", percent);
+	}
+
+	if (numOfT == 0) {
+		fprintf(stderr, "The number of trails is invaild!\n");
+		exit(-1);
+	}
+	
+	//int n1 = fork();
+	//int n2 = fork();
+	
+	//if(n1 > 0 && n2 > 0) {
+		//printf("PID %d\n", getpid());
+	
+
+
+	//pid_t pid;
+	//int x = 0;
+	//for (int i = 0; i < numOfT; i++) {
+	//	pid = fork();
+	//	if (pid == 0) {
+	//		printf("PID %d\n", getpid());
+	//		exit(0);
+	//	}
+	//	else {
+	//		printf("PID %d\n", getpid());
+	//		exit(0);
+	//	}
+	//}
+
+	//printf("Child: x = %d\n", x);
+	//printf("Parent: y = %d\n", y);
+
+	int i, stat;
+	pid_t pid[numOfT]; 
+	for (i=0; i<numOfT; i++) { 
+		if ((pid[i] = fork()) == 0) {
+			sleep(1); 
+			exit(100 + i); 
+		} 
+	} 
+									
+	if (verbose) {
+	 	for (i=0; i<numOfT; i++) { 
+	 		pid_t cpid = waitpid(pid[i], &stat, 0);
+			if (WIFEXITED(stat)) {
+				printf("PID %d\n", cpid); 
+			}
+		} 
+	}
+
+
+
+
+
+
+
 
 	return 0;
 }
